@@ -9,8 +9,9 @@ schema_view = get_swagger_view(title='cafe FAMFUN API')
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls') ),
-    path('api/cafe/', include('cafe.urls')),
-    path('api/gameroom/', include('game.urls')),
+    path('cafe/', include('cafe.urls')),
+    path('gameroom/', include('game.urls')),
+    path('orders/', include('order.urls')),
     url(r'^$', schema_view)
 ]
 
