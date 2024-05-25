@@ -6,7 +6,7 @@ class gameSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = game
-        fields = ['name','price']
+        fields = ['id','name','price']
     
 
         

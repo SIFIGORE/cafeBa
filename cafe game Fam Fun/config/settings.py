@@ -25,8 +25,11 @@ SECRET_KEY = 'django-insecure-fvv50$1m-kjkdy_p1szkrnm&**-1$7z%v0cn*$ox5uptb(^7(^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
+CORS_ORIGIN_ALLOW_ALL = True
 
+# Set a specific referrer policy
+REFERRER_POLICY = 'strict-origin-when-cross-origin'
 
 # Application definition
 
@@ -157,7 +160,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'django_cafegame',
         'USER': 'postgres',
-        'PASSWORD': '2981121405',
+        'PASSWORD': '2981140655',
         'HOST': 'localhost',
         'PORT': '5432'
     }
