@@ -160,7 +160,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'django_cafegame',
         'USER': 'postgres',
-        'PASSWORD': '2981140655',
+        'PASSWORD': '2981121405',
         'HOST': 'localhost',
         'PORT': '5432'
     }

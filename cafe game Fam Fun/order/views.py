@@ -1,3 +1,5 @@
+import json
+from venv import create
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -6,6 +8,11 @@ from .models import orders
 from .serializers import getOrdersSerializer , createOrderSerializer , orderSerializer
 from rest_framework import viewsets
 from django.http import HttpResponse
+from django.shortcuts import render
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from .models import orders
+from datetime import datetime
 
 class ordersViewSet(viewsets.ModelViewSet):
    
@@ -19,7 +26,7 @@ class createOrdersViewSet(APIView):
     Serializer_class = createOrderSerializer
 
     def post(self, request):
-        Serializer = createOrderSerializer(data=request.data)
+        Serializer = createOrderSerializer(data=request.data, many=True)
         if Serializer.is_valid(raise_exception = True):
             Serializer.save()
             return Response(Serializer.data, status=status.HTTP_201_CREATED)
@@ -36,4 +43,41 @@ class getOrdersViewSet(APIView):
         serializer = getOrdersSerializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+
+
+class getPrices(APIView):
+    queryset = orders.objects.all()
+    Serializer_class = createOrderSerializer
+
+    def post(self, request):
+        data = json.loads(request.body)
+        name = data.get('name')
+        start_date = data.get('start_date')
+        end_date = data.get('end_date')
+
+        # تبدیل تاریخ‌ها به شیء datetime
+        start_date = datetime.strptime(start_date, '%Y-%m-%d').date()
+        end_date = datetime.strptime(end_date, '%Y-%m-%d').date()
+
+        # فیلتر کردن داده‌ها بر اساس نام و بازه زمانی
+        orderss = orders.objects.filter( orders.name == name and orders.created >= start_date and orders.created <= end_date)
+        sumprice = 0
+        response_data = []
+        for orders in orderss:
+            dateflag = orders.created
+            if orders.created == dateflag :
+                sumprice = orders.price + sumprice
+
+            else:   
+                response_data.append({
+                'name': orders.name,
+                'date': dateflag,
+                'price': sumprice
+                })
+                sumprice = 0
+                dateflag = orders.created
+                sumprice = orders.price
+
+
+        return JsonResponse(response_data, safe=False)
     
