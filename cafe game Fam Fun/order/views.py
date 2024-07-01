@@ -49,7 +49,7 @@ class getPrices(APIView):
     queryset = orders.objects.all()
     Serializer_class = createOrderSerializer
 
-    def post(self, request):
+    def post(self , request):
         data = json.loads(request.body)
         name = data.get('name')
         start_date = data.get('start_date')
@@ -60,24 +60,24 @@ class getPrices(APIView):
         end_date = datetime.strptime(end_date, '%Y-%m-%d').date()
 
         # فیلتر کردن داده‌ها بر اساس نام و بازه زمانی
-        orderss = orders.objects.filter( orders.name == name and orders.created >= start_date and orders.created <= end_date)
+        oorderss = self.orders.objects.filter( self.orders.name == name and self.orders.created >= start_date and self.orders.created <= end_date)
         sumprice = 0
         response_data = []
-        for orders in orderss:
-            dateflag = orders.created
-            if orders.created == dateflag :
-                sumprice = orders.price + sumprice
+        for orders in oorderss:
+            dateflag = self.orders.created
+            if self.orders.created == dateflag :
+                sumprice = self.orders.price + sumprice
 
             else:   
                 response_data.append({
-                'name': orders.name,
+                'name': self.orders.name,
                 'date': dateflag,
                 'price': sumprice
                 })
                 sumprice = 0
-                dateflag = orders.created
-                sumprice = orders.price
+                dateflag = self.orders.created
+                sumprice = self.orders.price
 
 
-        return JsonResponse(response_data, safe=False)
+        return JsonResponse(response_data, status=status.HTTP_200_OK)
     
