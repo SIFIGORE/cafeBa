@@ -46,6 +46,7 @@ class getOrdersViewSet(APIView):
 
 
 class getPrices(APIView):
+    orders = orders
     queryset = orders.objects.all()
     Serializer_class = createOrderSerializer
 
