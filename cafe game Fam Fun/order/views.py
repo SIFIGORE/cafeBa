@@ -46,7 +46,7 @@ class getOrdersViewSet(APIView):
 
 
 class getPrices(APIView):
-    orders = orders
+    order = orders
     queryset = orders.objects.all()
     Serializer_class = createOrderSerializer
 
@@ -61,30 +61,30 @@ class getPrices(APIView):
         end_date = datetime.strptime(end_date, '%Y-%m-%d').date()
 
         # فیلتر کردن داده‌ها بر اساس نام و بازه زمانی
-        oorderss = self.orders.objects.filter(name=name, created__gte=start_date, created__lte=end_date)
+        oorderss = self.order.objects.filter(name == self.order.name , self.order.created == start_date, self.order.created == end_date)
         sumprice = 0
         response_data = []
         dateflag = None
 
-        for order in oorderss:
-            if dateflag is None or order.created == dateflag:
-                sumprice += order.price
+        for self.order in oorderss:
+            if dateflag is None or self.order.created == dateflag:
+                sumprice += self.order.price
             else:
                 response_data.append({
-                    'name': order.name,
+                    'name': self.order.name ,
                     'date': dateflag,
                     'price': sumprice
                 })
-                sumprice = order.price
+                sumprice = self.order.price
 
-            dateflag = order.created
+            dateflag = self.order.created
 
         # اضافه کردن آخرین روز
         if dateflag is not None:
             response_data.append({
-                'name': name,
+                'name': self.order.name,
                 'date': dateflag,
                 'price': sumprice
             })
 
-        return JsonResponse(response_data, status=status.HTTP_200_OK)
+        return JsonResponse(response_data, status=status.HTTP_200_OK , safe=False)
