@@ -53,7 +53,7 @@ class getPrices(APIView):
         data = json.loads(request.body)
         name = data.get('name')
         start_date = data.get('start_date')
-        end_date = data.get('end_date')
+        end_date = data.get('start_date')
 
         # تبدیل تاریخ‌ها به شیء datetime
         start_date = datetime.strptime(start_date, '%Y-%m-%d').date()
