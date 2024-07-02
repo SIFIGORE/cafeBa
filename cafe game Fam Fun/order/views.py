@@ -97,7 +97,8 @@ class getPrices(APIView):
                     })
                     sum_price = int(order['price'])
                     date_flag = created_date
-            c = c+1
+                    c = c+1
+            
         # اضافه کردن آخرین روز
         if date_flag is not None:
             response_data.append({
