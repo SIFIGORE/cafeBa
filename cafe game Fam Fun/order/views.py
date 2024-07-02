@@ -52,7 +52,7 @@ class getPrices(APIView):
 
     def post(self, request):
         data = json.loads(request.body)
-        name = data.get('name')
+        naame = data.get('name')
         start_date = data.get('start_date')
         end_date = data.get('end_date')
 
@@ -61,31 +61,34 @@ class getPrices(APIView):
         end_date = datetime.strptime(end_date, '%Y-%m-%d').date()
 
         # فیلتر کردن داده‌ها بر اساس نام و بازه زمانی
-        oorderss = self.order.objects.filter(name == self.order.name , start_date <= datetime.strptime(self.order.created , '%Y-%m-%d').date() <= end_date)
-        sumprice = 0
-        response_data = []
-        dateflag = None
+        oorderss = self.order.objects.filter(naame = self.order.name)
+        if start_date <= self.order.created <= end_date : 
+            sumprice = 0
+            response_data = []
+            dateflag = None
 
-        for self.order.objects in oorderss:
-            if dateflag is None or self.order.created == dateflag:
-                sumprice = self.order.price + sumprice
+            for self.order.objects in oorderss:
+                if dateflag is None or self.order.created == dateflag:
+                    sumprice = self.order.price + sumprice
+                    dateflag = self.order.created
+                else:
+                    response_data.append({
+                        'name': self.order.name ,
+                        'date': dateflag,
+                        'price': sumprice
+                    })
+                    sumprice = self.order.price
+
                 dateflag = self.order.created
-            else:
-                response_data.append({
-                    'name': self.order.name ,
-                    'date': dateflag,
-                    'price': sumprice
-                })
-                sumprice = self.order.price
 
-            dateflag = self.order.created
+            # اضافه کردن آخرین روز
+            # if dateflag is not None:
+            #     response_data.append({
+            #         'name': self.order.name,
+            #         'date': dateflag,
+            #         'price': sumprice
+            #     })
 
-        # اضافه کردن آخرین روز
-        # if dateflag is not None:
-        #     response_data.append({
-        #         'name': self.order.name,
-        #         'date': dateflag,
-        #         'price': sumprice
-        #     })
-
-        return JsonResponse(response_data, status=status.HTTP_200_OK , safe=False)
+            return JsonResponse(response_data, status=status.HTTP_200_OK , safe=False)
+        else :
+            pass
