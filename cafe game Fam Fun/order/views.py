@@ -62,6 +62,7 @@ class getPrices(APIView):
 
         # فیلتر کردن داده‌ها بر اساس نام و بازه زمانی
         orders_list = self.queryset.filter(name=name, created__range=(start_date, end_date)).values()
+        print(f"Number of filtered orders: {len(orders_list)}")
         sum_price = 0
         response_data = []
         date_flag = None
