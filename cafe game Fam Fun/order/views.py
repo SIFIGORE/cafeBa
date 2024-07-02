@@ -92,11 +92,11 @@ class getPrices(APIView):
                     date_flag = created_date
 
         # اضافه کردن آخرین روز
-        if date_flag is not None:
-            response_data.append({
-                'name': orders_list[-1]['name'],
-                'date': date_flag,
-                'price': sum_price
-            })
+        # if date_flag is not None:
+        #     response_data.append({
+        #         'name': orders_list[-1]['name'],
+        #         'date': date_flag,
+        #         'price': sum_price
+        #     })
 
         return Response(response_data, status=status.HTTP_200_OK)
