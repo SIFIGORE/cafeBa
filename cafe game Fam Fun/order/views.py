@@ -76,7 +76,7 @@ class getPrices(APIView):
         date_flag = None
 
         for order in orders_list:
-            created_date = order['created'].date()
+            created_date = order['created']
             print(f"Processing order: {order}")  # چاپ داده‌های پردازش شده
             if start_date <= created_date <= end_date:
                 if date_flag is None or created_date == date_flag:
