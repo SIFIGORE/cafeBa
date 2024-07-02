@@ -61,7 +61,7 @@ class getPrices(APIView):
         end_date = datetime.strptime(end_date, '%Y-%m-%d').date()
 
         # فیلتر کردن داده‌ها بر اساس نام و بازه زمانی
-        oorderss = self.order.objects.filter(naame == self.order.name)
+        oorderss = self.order.objects.filter(name = naame).values()
         if start_date <= self.order.created <= end_date : 
             sumprice = 0
             response_data = []
