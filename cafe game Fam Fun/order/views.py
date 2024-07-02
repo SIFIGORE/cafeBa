@@ -88,6 +88,7 @@ class getPrices(APIView):
                     sum_price += int(order['price'])
                     date_flag = created_date
                 else:
+                    print(f"we are in else and the order name is : {order['name']} and date_flag is : {date_flag} and sum_price is {sum_price}")
                     response_data.append({
                         'name': order['name'],
                         'date': date_flag,
