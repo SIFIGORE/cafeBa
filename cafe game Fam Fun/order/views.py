@@ -62,13 +62,13 @@ class getPrices(APIView):
 
         # فیلتر کردن داده‌ها بر اساس نام و بازه زمانی
         oorderss = self.order.objects.filter(name = naame).values()
-        selfOrderCreatedVarieble = self.order.objects.get()
-        if start_date <= selfOrderCreatedVarieble.created <= end_date : 
-            sumprice = 0
-            response_data = []
-            dateflag = None
+        sumprice = 0
+        response_data = []
+        dateflag = None
 
-            for self.order.objects in oorderss:
+        for self.order.objects in oorderss:
+            selfOrderCreatedVarieble = self.order
+            if start_date <= selfOrderCreatedVarieble.created <= end_date : 
                 if dateflag is None or self.order.created == dateflag:
                     sumprice = self.order.price + sumprice
                     dateflag = self.order.created
@@ -79,18 +79,12 @@ class getPrices(APIView):
                         'price': sumprice
                     })
                     sumprice = self.order.price
-                    c = c+1
-
-                dateflag = self.order.created
-
+                    dateflag = self.order.create
             # اضافه کردن آخرین روز
             # if dateflag is not None:
             #     response_data.append({
             #         'name': self.order.name,
             #         'date': dateflag,
             #         'price': sumprice
-            #     })
-
+            #     }
             return JsonResponse(response_data, status=status.HTTP_200_OK , safe=False)
-        else :
-            pass
