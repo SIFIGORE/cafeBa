@@ -74,8 +74,9 @@ class getPrices(APIView):
         sum_price = 0
         response_data = []
         date_flag = None
-
+        c = 0
         for order in orders_list:
+            c = c +1
             created_date = order['created']
             print(f"Processing order: {order}")  # چاپ داده‌های پردازش شده
             print(f"order created at: {order['created']}")
@@ -98,11 +99,11 @@ class getPrices(APIView):
                     date_flag = created_date
 
         # اضافه کردن آخرین روز
-        # if date_flag is not None:
-        #     response_data.append({
-        #         'name': orders_list[-1]['name'],
-        #         'date': date_flag,
-        #         'price': sum_price
-        #     })
+        if date_flag is not None:
+            response_data.append({
+                'name': orders_list[c]['name'],
+                'date': date_flag,
+                'price': sum_price
+            })
 
         return Response(response_data, status=status.HTTP_200_OK)
