@@ -62,8 +62,8 @@ class getPrices(APIView):
 
         # فیلتر کردن داده‌ها بر اساس نام و بازه زمانی
         oorderss = self.order.objects.filter(name = naame).values()
-        selfOrderCreatedVarieble = self.order.created
-        if start_date <= selfOrderCreatedVarieble <= end_date : 
+        selfOrderCreatedVarieble = self.order.objects.get()
+        if start_date <= selfOrderCreatedVarieble.created <= end_date : 
             sumprice = 0
             response_data = []
             dateflag = None
@@ -79,6 +79,7 @@ class getPrices(APIView):
                         'price': sumprice
                     })
                     sumprice = self.order.price
+                    c = c+1
 
                 dateflag = self.order.created
 
