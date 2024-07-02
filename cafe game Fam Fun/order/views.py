@@ -49,7 +49,6 @@ class getOrdersViewSet(APIView):
 class getPrices(APIView):
     queryset = orders.objects.all()
     serializer_class = createOrderSerializer
-    order = orders
 
     def post(self, request):
         data = json.loads(request.body)
@@ -68,7 +67,7 @@ class getPrices(APIView):
         date_flag = None
 
         for order in orders_list:
-            created_date = self.order['created'].date()
+            created_date = orders['created'].date()
             if start_date <= created_date <= end_date:
                 if date_flag is None or created_date == date_flag:
                     sum_price += order['price']
