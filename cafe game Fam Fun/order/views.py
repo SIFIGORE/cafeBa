@@ -80,7 +80,7 @@ class getPrices(APIView):
             print(f"Processing order: {order}")  # چاپ داده‌های پردازش شده
             if start_date <= created_date <= end_date:
                 if date_flag is None or created_date == date_flag:
-                    sum_price += order['price']
+                    sum_price += int(order['price'])
                     date_flag = created_date
                 else:
                     response_data.append({
