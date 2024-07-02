@@ -67,7 +67,7 @@ class getPrices(APIView):
         dateflag = None
 
         for self.order.objects in oorderss:
-            selfOrderCreatedVarieble = self.order
+            selfOrderCreatedVarieble = self.order.get_deferred_fields
             if start_date <= selfOrderCreatedVarieble.created <= end_date : 
                 if dateflag is None or self.order.created == dateflag:
                     sumprice = self.order.price + sumprice
