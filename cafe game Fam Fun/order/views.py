@@ -68,7 +68,9 @@ class getPrices(APIView):
 
         # چاپ تعداد داده‌های فیلتر شده برای اشکال‌زدایی
         print(f"Number of filtered orders: {len(orders_list)}")
-
+        if len(orders_list) == 0:
+            print(f"No orders found for name: {name} and date range: {start_date} to {end_date}")
+        
         sum_price = 0
         response_data = []
         date_flag = None
