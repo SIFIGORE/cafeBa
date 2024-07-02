@@ -4,6 +4,7 @@ from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import generics , status
+from yaml import serialize
 from .models import orders 
 from .serializers import getOrdersSerializer , createOrderSerializer , orderSerializer
 from rest_framework import viewsets
@@ -79,7 +80,7 @@ class getPrices(APIView):
                         'price': sumprice
                     })
                     sumprice = self.order.price
-                    dateflag = self.order.create
+                    dateflag = self.order.created
             # اضافه کردن آخرین روز
             # if dateflag is not None:
             #     response_data.append({
@@ -88,3 +89,5 @@ class getPrices(APIView):
             #         'price': sumprice
             #     }
             return JsonResponse(response_data, status=status.HTTP_200_OK , safe=False)
+        if response_data is None :
+            return Response(status=status.HTTP_400_BAD_REQUEST)
