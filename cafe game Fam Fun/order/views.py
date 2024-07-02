@@ -47,13 +47,13 @@ class getOrdersViewSet(APIView):
 
 
 class getPrices(APIView):
-    order = orders
     queryset = orders.objects.all()
-    Serializer_class = createOrderSerializer
+    serializer_class = createOrderSerializer
+    order = orders
 
     def post(self, request):
         data = json.loads(request.body)
-        naame = data.get('name')
+        name = data.get('name')
         start_date = data.get('start_date')
         end_date = data.get('end_date')
 
@@ -62,32 +62,32 @@ class getPrices(APIView):
         end_date = datetime.strptime(end_date, '%Y-%m-%d').date()
 
         # فیلتر کردن داده‌ها بر اساس نام و بازه زمانی
-        order_list = self.order.objects.filter(name = naame,created__range=(start_date, end_date)).values()
-        sumprice = 0
+        orders_list = self.queryset.filter(name=name, created__range=(start_date, end_date)).values()
+        sum_price = 0
         response_data = []
-        dateflag = None
+        date_flag = None
 
-        for self.order.objects in order_list:
+        for order in orders_list:
             created_date = self.order['created'].date()
-            if start_date <= created_date <= end_date : 
-                if dateflag is None or self.order.created == dateflag:
-                    sumprice = self.order.price + sumprice
-                    dateflag = self.order.created
+            if start_date <= created_date <= end_date:
+                if date_flag is None or created_date == date_flag:
+                    sum_price += order['price']
+                    date_flag = created_date
                 else:
                     response_data.append({
-                        'name': self.order.name ,
-                        'date': dateflag,
-                        'price': sumprice
+                        'name': order['name'],
+                        'date': date_flag,
+                        'price': sum_price
                     })
-                    sumprice = self.order.price
-                    dateflag = self.order.created
-            # اضافه کردن آخرین روز
-            # if dateflag is not None:
-            #     response_data.append({
-            #         'name': self.order.name,
-            #         'date': dateflag,
-            #         'price': sumprice
-            #     }
-            return JsonResponse(response_data, status=status.HTTP_200_OK , safe=False)
-        if response_data is None :
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+                    sum_price = order['price']
+                    date_flag = created_date
+
+        # اضافه کردن آخرین روز
+        if date_flag is not None:
+            response_data.append({
+                'name': orders_list[-1]['name'],
+                'date': date_flag,
+                'price': sum_price
+            })
+
+        return Response(response_data, status=status.HTTP_200_OK)
