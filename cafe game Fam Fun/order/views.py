@@ -62,9 +62,8 @@ class getPrices(APIView):
 
         # فیلتر کردن داده‌ها بر اساس نام و بازه زمانی
         oorderss = self.order.objects.filter(name = naame).values()
-        selfOrderCreatedVarieble = str(self.order.created)
-        SOCVToDate = datetime.strptime(selfOrderCreatedVarieble, '%Y-%m-%d').date()
-        if start_date <= SOCVToDate <= end_date : 
+        selfOrderCreatedVarieble = self.order.created
+        if start_date <= selfOrderCreatedVarieble <= end_date : 
             sumprice = 0
             response_data = []
             dateflag = None
