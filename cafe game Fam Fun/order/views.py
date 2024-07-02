@@ -59,16 +59,23 @@ class getPrices(APIView):
         # تبدیل تاریخ‌ها به شیء datetime
         start_date = datetime.strptime(start_date, '%Y-%m-%d').date()
         end_date = datetime.strptime(end_date, '%Y-%m-%d').date()
+        print("Initial data from DB:")
+        for order in self.queryset.values():
+            print(order)
 
         # فیلتر کردن داده‌ها بر اساس نام و بازه زمانی
         orders_list = self.queryset.filter(name=name, created__range=(start_date, end_date)).values()
+
+        # چاپ تعداد داده‌های فیلتر شده برای اشکال‌زدایی
         print(f"Number of filtered orders: {len(orders_list)}")
+
         sum_price = 0
         response_data = []
         date_flag = None
 
         for order in orders_list:
-            created_date = orders['created'].date()
+            created_date = order['created'].date()
+            print(f"Processing order: {order}")  # چاپ داده‌های پردازش شده
             if start_date <= created_date <= end_date:
                 if date_flag is None or created_date == date_flag:
                     sum_price += order['price']
