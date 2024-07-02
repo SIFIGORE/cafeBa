@@ -78,6 +78,11 @@ class getPrices(APIView):
         for order in orders_list:
             created_date = order['created']
             print(f"Processing order: {order}")  # چاپ داده‌های پردازش شده
+            print(f"order created at: {order['created']}")
+            print(f"order name is: {order['name']}")
+            print(f"order price is: {order['price']}")
+            print(f"sum_price is: {sum_price}") 
+            print(f"date_flag is: {date_flag}") # چاپ داده‌های پردازش شده
             if start_date <= created_date <= end_date:
                 if date_flag is None or created_date == date_flag:
                     sum_price += int(order['price'])
