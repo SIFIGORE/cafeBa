@@ -55,7 +55,7 @@ class getPrices(APIView):
         name = data.get('name')
         start_date = data.get('start_date')
         end_date = data.get('end_date')
-
+        print(f"end_date is : {end_date}")
         # تبدیل تاریخ‌ها به شیء datetime
         start_date = datetime.strptime(start_date, '%Y-%m-%d').date()
         end_date = datetime.strptime(end_date, '%Y-%m-%d').date()
