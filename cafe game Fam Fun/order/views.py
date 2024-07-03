@@ -134,7 +134,7 @@ class getPricesAll(APIView):
         # چاپ تعداد داده‌های فیلتر شده برای اشکال‌زدایی
         print(f"Number of filtered orders: {len(orders_list)}")
         if len(orders_list) == 0:
-            print(f"No orders found for name: {name} and date range: {start_date} to {end_date}")
+            print(f"date range: {start_date} to {end_date}")
         
         sum_price = 0
         response_data = []
@@ -153,7 +153,7 @@ class getPricesAll(APIView):
                     sum_price += int(order['price'])
                     date_flag = created_date
                 else:
-                    print(f"we are in else and the order name is : {order['name']} and date_flag is : {date_flag} and sum_price is {sum_price}")
+                    print(f"date_flag is : {date_flag} and sum_price is {sum_price}")
                     response_data.append({
                         'date': date2jalali(date_flag),
                         'price': sum_price
