@@ -14,6 +14,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .models import orders
 from datetime import datetime
+from jalali_date import date2jalali
 
 class ordersViewSet(viewsets.ModelViewSet):
    
@@ -92,7 +93,7 @@ class getPrices(APIView):
                     print(f"we are in else and the order name is : {order['name']} and date_flag is : {date_flag} and sum_price is {sum_price}")
                     response_data.append({
                         'name': order['name'],
-                        'date': date_flag,
+                        'date': date2jalali(date_flag),
                         'price': sum_price
                     })
                     sum_price = int(order['price'])
@@ -103,7 +104,68 @@ class getPrices(APIView):
         if date_flag is not None:
             response_data.append({
                 'name': orders_list[c]['name'],
-                'date': date_flag,
+                'date': date2jalali(date_flag),
+                'price': sum_price
+            })
+
+        return Response(response_data, status=status.HTTP_200_OK)
+    
+
+
+class getPricesAll(APIView):
+    queryset = orders.objects.all()
+    serializer_class = createOrderSerializer
+
+    def post(self, request):
+        data = json.loads(request.body)
+        start_date = data.get('start_date')
+        end_date = data.get('end_date')
+        print(f"end_date is : {end_date}")
+        # تبدیل تاریخ‌ها به شیء datetime
+        start_date = datetime.strptime(start_date, '%Y-%m-%d').date()
+        end_date = datetime.strptime(end_date, '%Y-%m-%d').date()
+        print("Initial data from DB:")
+        for order in self.queryset.values():
+            print(order)
+
+        # فیلتر کردن داده‌ها بر اساس نام و بازه زمانی
+        orders_list = self.queryset.filter(created__range=(start_date, end_date)).values()
+
+        # چاپ تعداد داده‌های فیلتر شده برای اشکال‌زدایی
+        print(f"Number of filtered orders: {len(orders_list)}")
+        if len(orders_list) == 0:
+            print(f"No orders found for name: {name} and date range: {start_date} to {end_date}")
+        
+        sum_price = 0
+        response_data = []
+        date_flag = None
+        c = 0
+        for order in orders_list:
+            
+            created_date = order['created']
+            print(f"Processing order: {order}")  # چاپ داده‌های پردازش شده
+            print(f"order created at: {order['created']}")
+            print(f"order price is: {order['price']}")
+            print(f"sum_price is: {sum_price}") 
+            print(f"date_flag is: {date_flag}") # چاپ داده‌های پردازش شده
+            if start_date <= created_date <= end_date:
+                if date_flag is None or created_date == date_flag:
+                    sum_price += int(order['price'])
+                    date_flag = created_date
+                else:
+                    print(f"we are in else and the order name is : {order['name']} and date_flag is : {date_flag} and sum_price is {sum_price}")
+                    response_data.append({
+                        'date': date2jalali(date_flag),
+                        'price': sum_price
+                    })
+                    sum_price = int(order['price'])
+                    date_flag = created_date
+                    c = c+1
+            
+        # اضافه کردن آخرین روز
+        if date_flag is not None:
+            response_data.append({
+                'date': date2jalali(date_flag),
                 'price': sum_price
             })
 
