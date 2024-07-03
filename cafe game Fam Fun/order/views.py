@@ -14,6 +14,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .models import orders
 from datetime import datetime
+from jalali_date import date2jalali
 
 class ordersViewSet(viewsets.ModelViewSet):
    
@@ -92,7 +93,7 @@ class getPrices(APIView):
                     print(f"we are in else and the order name is : {order['name']} and date_flag is : {date_flag} and sum_price is {sum_price}")
                     response_data.append({
                         'name': order['name'],
-                        'date': date_flag,
+                        'date': date2jalali(date_flag),
                         'price': sum_price
                     })
                     sum_price = int(order['price'])
@@ -103,7 +104,7 @@ class getPrices(APIView):
         if date_flag is not None:
             response_data.append({
                 'name': orders_list[c]['name'],
-                'date': date_flag,
+                'date': date2jalali(date_flag),
                 'price': sum_price
             })
 
@@ -154,7 +155,7 @@ class getPricesAll(APIView):
                 else:
                     print(f"we are in else and the order name is : {order['name']} and date_flag is : {date_flag} and sum_price is {sum_price}")
                     response_data.append({
-                        'date': date_flag,
+                        'date': date2jalali(date_flag),
                         'price': sum_price
                     })
                     sum_price = int(order['price'])
@@ -164,7 +165,7 @@ class getPricesAll(APIView):
         # اضافه کردن آخرین روز
         if date_flag is not None:
             response_data.append({
-                'date': date_flag,
+                'date': date2jalali(date_flag),
                 'price': sum_price
             })
 
