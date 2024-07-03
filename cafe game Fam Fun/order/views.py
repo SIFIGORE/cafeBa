@@ -14,6 +14,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .models import orders
 from datetime import datetime
+import jdatetime
 
 class ordersViewSet(viewsets.ModelViewSet):
    
@@ -90,9 +91,10 @@ class getPrices(APIView):
                     date_flag = created_date
                 else:
                     print(f"we are in else and the order name is : {order['name']} and date_flag is : {date_flag} and sum_price is {sum_price}")
+                    jalali_date = jdatetime.date.fromgregorian(day=date_flag.day, month=date_flag.month, year=date_flag.year)
                     response_data.append({
                         'name': order['name'],
-                        'date': date_flag,
+                        'date': jalali_date,
                         'price': sum_price
                     })
                     sum_price = int(order['price'])
@@ -101,9 +103,10 @@ class getPrices(APIView):
             
         # اضافه کردن آخرین روز
         if date_flag is not None:
+            jalali_date = jdatetime.date.fromgregorian(day=date_flag.day, month=date_flag.month, year=date_flag.year)
             response_data.append({
                 'name': orders_list[c]['name'],
-                'date': date_flag,
+                'date': jalali_date,
                 'price': sum_price
             })
 
@@ -153,8 +156,9 @@ class getPricesAll(APIView):
                     date_flag = created_date
                 else:
                     print(f"date_flag is : {date_flag} and sum_price is {sum_price}")
+                    jalali_date = jdatetime.date.fromgregorian(day=date_flag.day, month=date_flag.month, year=date_flag.year)
                     response_data.append({
-                        'date': date_flag,
+                        'date': jalali_date,
                         'price': sum_price
                     })
                     sum_price = int(order['price'])
@@ -163,8 +167,9 @@ class getPricesAll(APIView):
             
         # اضافه کردن آخرین روز
         if date_flag is not None:
+            jalali_date = jdatetime.date.fromgregorian(day=date_flag.day, month=date_flag.month, year=date_flag.year)
             response_data.append({
-                'date': date_flag,
+                'date': jalali_date,
                 'price': sum_price
             })
 
