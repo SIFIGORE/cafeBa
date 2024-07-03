@@ -94,7 +94,7 @@ class getPrices(APIView):
                     jalali_date = jdatetime.date.fromgregorian(day=date_flag.day, month=date_flag.month, year=date_flag.year)
                     response_data.append({
                         'name': order['name'],
-                        'date': jalali_date,
+                        'date': jalali_date.strftime('%Y-%m-%d'),
                         'price': sum_price
                     })
                     sum_price = int(order['price'])
@@ -106,7 +106,7 @@ class getPrices(APIView):
             jalali_date = jdatetime.date.fromgregorian(day=date_flag.day, month=date_flag.month, year=date_flag.year)
             response_data.append({
                 'name': orders_list[c]['name'],
-                'date': jalali_date,
+                'date': jalali_date.strftime('%Y-%m-%d'),
                 'price': sum_price
             })
 
@@ -158,7 +158,7 @@ class getPricesAll(APIView):
                     print(f"date_flag is : {date_flag} and sum_price is {sum_price}")
                     jalali_date = jdatetime.date.fromgregorian(day=date_flag.day, month=date_flag.month, year=date_flag.year)
                     response_data.append({
-                        'date': jalali_date,
+                        'date': jalali_date.strftime('%Y-%m-%d'),
                         'price': sum_price
                     })
                     sum_price = int(order['price'])
@@ -169,7 +169,7 @@ class getPricesAll(APIView):
         if date_flag is not None:
             jalali_date = jdatetime.date.fromgregorian(day=date_flag.day, month=date_flag.month, year=date_flag.year)
             response_data.append({
-                'date': jalali_date,
+                'date': jalali_date.strftime('%Y-%m-%d'),
                 'price': sum_price
             })
 
